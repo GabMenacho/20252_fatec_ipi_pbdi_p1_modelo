@@ -8,8 +8,8 @@
 
 | Nome completo | RA |
 |:--------------|:---|
-|                |     |
-|                |     |
-|                |     |
+|Felipe Hideki Rodrigues Shinozaki    |2041382421018|     |
+|Gabriela Fernandez Menacho           |2041382421007|
+|Gustavo Marques de Assis Santos      |2041382421028|
 |                |     |
 |                |     |
