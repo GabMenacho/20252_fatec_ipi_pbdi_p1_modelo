@@ -7,12 +7,12 @@
 --escreva a sua solução aqui
 
 --tabela para armazenar os resultados:
--- CREATE TABLE tb_price_and_description(
---      cod_country SERIAL PRIMARY KEY,
---      nome_pais VARCHAR(200),
---      preco_medio FLOAT,
---      descricao_mais_longa VARCHAR(2000)
--- )
+CREATE TABLE tb_price_and_description(
+     cod_country SERIAL PRIMARY KEY,
+     nome_pais VARCHAR(200),
+     preco_medio FLOAT,
+     descricao_mais_longa VARCHAR(2000)
+)
 -- ---
 
 -- ----------------------------------------------------------------
