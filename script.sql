@@ -20,27 +20,30 @@
 --escreva a sua solução aqui
 
 DO $$
-DECLARE 
-   cur_paises_descricoes REFCURSOR; 
-   v_country TEXT;
-   v_longa_descricao TEXT;
+DECLARE
+    v_country TEXT;
+    v_longa_descricao TEXT;
+ 
+    cur_paises_descricoes CURSOR FOR
+        SELECT DISTINCT ON (country)
+            country,
+            description
+        FROM
+            tb_wine_reviews
+        WHERE
+            country IS NOT NULL AND description IS NOT NULL
+        ORDER BY
+            country, LENGTH(description) DESC;
 BEGIN
-   OPEN cur_paises_descricoes FOR 
-       SELECT DISTINCT ON (country)
-           country,
-           description
-       FROM
-           tb_wine_reviews
-       WHERE
-           country IS NOT NULL AND description IS NOT NULL
-       ORDER BY
-           country, LENGTH(description) DESC; 
-   LOOP 
-       FETCH cur_paises_descricoes INTO v_country, v_longa_descricao; 
-       EXIT WHEN NOT FOUND;
-       RAISE NOTICE 'País: %, Descrição Mais Longa: %', v_country, v_longa_descricao;
-   END LOOP;
-   CLOSE cur_paises_descricoes;
+    OPEN cur_paises_descricoes;
+ 
+    LOOP
+        FETCH cur_paises_descricoes INTO v_country, v_longa_descricao;
+        EXIT WHEN NOT FOUND;
+        RAISE NOTICE 'País: %, Descrição Mais Longa: %', v_country, v_longa_descricao;
+    END LOOP;
+ 
+    CLOSE cur_paises_descricoes;
 END $$;
 
 -- ----------------------------------------------------------------
@@ -76,7 +79,7 @@ END $$;
 
 -- ----------------------------------------------------------------
 -- 1 Base de dados e criação de tabela
---escreva a sua solução aqui
+-- escreva a sua solução aqui
 
 -- CREATE TABLE tb_wine_reviews(
 --      cod_wine SERIAL PRIMARY KEY,
