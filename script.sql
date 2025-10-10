@@ -14,7 +14,8 @@ CREATE TABLE tb_price_and_description(
      descricao_mais_longa VARCHAR(2000)
 )
 -- ---
--- adicionando função no cursor não vinculado para inserir o resultado na tabela
+
+-- adiciona função no cursor não vinculado para inserir o resultado na tabela
 DO $$
 DECLARE
     cur_paises_precos REFCURSOR; 
@@ -40,6 +41,37 @@ BEGIN
         INSERT INTO tb_price_and_description(nome_pais, preco_medio) VALUES (v_country, v_avg_price);
     END LOOP; 
     CLOSE cur_paises_precos; 
+END $$;
+
+--adiciona função no cursor vinculado para inserir o resultado na tabela
+DO $$
+DECLARE
+    v_country TEXT;
+    v_longa_descricao TEXT;
+
+    cur_paises_descricoes CURSOR FOR
+        SELECT DISTINCT ON (country)
+            country,
+            description
+        FROM tb_wine_reviews
+        WHERE country IS NOT NULL
+          AND description IS NOT NULL
+        ORDER BY country, LENGTH(description) DESC;
+BEGIN
+    OPEN cur_paises_descricoes;
+
+    LOOP
+        FETCH cur_paises_descricoes INTO v_country, v_longa_descricao;
+        EXIT WHEN NOT FOUND;
+
+        UPDATE tb_price_and_description
+        SET descricao_mais_longa = v_longa_descricao
+        WHERE nome_pais = v_country;
+
+        RAISE NOTICE 'País: %, Descrição Mais Longa: %', v_country, v_longa_descricao;
+    END LOOP;
+
+    CLOSE cur_paises_descricoes;
 END $$;
 
 -- ----------------------------------------------------------------
