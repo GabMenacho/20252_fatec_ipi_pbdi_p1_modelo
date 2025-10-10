@@ -14,6 +14,33 @@ CREATE TABLE tb_price_and_description(
      descricao_mais_longa VARCHAR(2000)
 )
 -- ---
+-- adicionando função no cursor não vinculado para inserir o resultado na tabela
+DO $$
+DECLARE
+    cur_paises_precos REFCURSOR; 
+    v_country TEXT;
+    v_avg_price NUMERIC(10, 2); 
+BEGIN 
+    OPEN cur_paises_precos FOR 
+        SELECT 
+            country, 
+            AVG(price)::NUMERIC(10, 2) 
+        FROM 
+            tb_wine_reviews 
+        WHERE 
+            country IS NOT NULL 
+        GROUP BY 
+            country 
+        ORDER BY 
+            country; 
+    LOOP 
+        FETCH cur_paises_precos INTO v_country, v_avg_price; 
+        EXIT WHEN NOT FOUND; 
+        RAISE NOTICE 'País: %, Preço Médio: %', v_country, v_avg_price;
+        INSERT INTO tb_price_and_description(nome_pais, preco_medio) VALUES (v_country, v_avg_price);
+    END LOOP; 
+    CLOSE cur_paises_precos; 
+END $$;
 
 -- ----------------------------------------------------------------
 -- 3 Cursor vinculado (Descrição mais longa)
@@ -45,6 +72,7 @@ BEGIN
  
     CLOSE cur_paises_descricoes;
 END $$;
+
 
 -- ----------------------------------------------------------------
 -- 2 Cursor não vinculado (cálculo de preço médio)
