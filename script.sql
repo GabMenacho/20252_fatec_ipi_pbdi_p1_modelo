@@ -1,9 +1,23 @@
+-- ----------------------------------------------------------------
+-- 5 Exportação dos dados
+--escreva a sua solução aqui
+
+-------------------------------------------------------------
+-- 4 Armazenamento dos resultados
+--escreva a sua solução aqui
+
+--tabela para armazenar os resultados:
 -- CREATE TABLE tb_price_and_description(
 --      cod_country SERIAL PRIMARY KEY,
 --      nome_pais VARCHAR(200),
 --      preco_medio FLOAT,
 --      descricao_mais_longa VARCHAR(2000)
 -- )
+-- ---
+
+-- ----------------------------------------------------------------
+-- 3 Cursor vinculado (Descrição mais longa)
+--escreva a sua solução aqui
 
 DO $$
 DECLARE 
@@ -28,6 +42,10 @@ BEGIN
    END LOOP;
    CLOSE cur_paises_descricoes;
 END $$;
+
+-- ----------------------------------------------------------------
+-- 2 Cursor não vinculado (cálculo de preço médio)
+--escreva a sua solução aqui
 
 DO $$
 DECLARE
@@ -56,6 +74,9 @@ BEGIN
     CLOSE cur_paises_precos; 
 END $$;
 
+-- ----------------------------------------------------------------
+-- 1 Base de dados e criação de tabela
+--escreva a sua solução aqui
 
 -- CREATE TABLE tb_wine_reviews(
 --      cod_wine SERIAL PRIMARY KEY,
